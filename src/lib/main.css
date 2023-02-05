@@ -49,7 +49,6 @@
   margin:0 auto;
   background-size:45px
 }
-${getBottomCSS()}
 #btm-darkmode {
   background: rgba(0,0,0,.5);
   backdrop-filter: blur(11px) contrast(5);

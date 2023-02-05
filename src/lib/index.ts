@@ -270,10 +270,23 @@ function attachEvents(wrapper: HTMLDivElement): void {
     darkToggleThumb.classList.remove(darkOnClassName);
   }
   // 3 - Event handler
-  $('#dark-switch').click(function () {
+  // TODO change dark mode switcher
+  $('#btm-dark-switch').click(function () {
     darkToggleThumb.classList.toggle(darkOnClassName);
     const setToDark = darkToggleThumb.classList.contains(darkOnClassName);
-
+    if (setToDark) {
+      $('#darkmode')[0].disabled = false;
+      let cssHtml = $('#darkmode').html();
+      const darkSelector = '@media (prefers-color-scheme:dark){';
+      if(cssHtml.includes(darkSelector)) {
+        const lastBracketIndex = cssHtml.lastIndexOf('}');
+        cssHtml = removeByIndex(cssHtml, lastBracketIndex);
+        cssHtml = cssHtml.split(darkSelector).join('');
+      }
+      $('#darkmode').html(cssHtml);
+    } else {
+      $('#darkmode')[0].disabled = true; // Set to true, so we force the <style>@media .... </style> block to stop working.
+    }
     ga('gT.send', 'event', {
       eventCategory:'ux-report',
       eventAction:setToDark ? 'light-to-dark' : 'dark-to-light',
@@ -281,22 +294,7 @@ function attachEvents(wrapper: HTMLDivElement): void {
       eventLabel:`${test.name}/${test.lang}`,
       nonInteraction:true
     });
-
-    if (setToDark) {
-      $('#darkmode')[0].disabled=false;
-      var css_html = $('#darkmode').html();
-      var dark_selector = '@media (prefers-color-scheme:dark){';
-      if(css_html.includes(dark_selector)) {
-        var lastBracketIndex = css_html.lastIndexOf('}');
-        css_html = removeByIndex(css_html, lastBracketIndex);
-        css_html = css_html.split(dark_selector).join('');
-      }
-      $('#darkmode').html(css_html);
-    } else {
-      $('#darkmode')[0].disabled = true; // Set to true, so we force the <style>@media .... </style> block to stop working.
-    }
-
-  })
+  });
 }
 function start(rsbtxt: string[]): void {
   if ($('#btm-share').length) return;
