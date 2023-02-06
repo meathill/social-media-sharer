@@ -9,5 +9,10 @@ export type SocialConfig = {
 
 export type SmmConfig = {
   socials: Record<Platforms, SocialConfig>;
+  test: TestData;
   copyLinkDoneText: string;
+  quizHashtag: string;
+  prestige: string;
+  ogResultUrl: string;
+  ogResultImg: string;
 }

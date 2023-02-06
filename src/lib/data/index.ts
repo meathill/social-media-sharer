@@ -62,12 +62,22 @@ export function initConfig(rsbtxt: string[], test: TestData) {
     twitterText,
     copyLinkText,
     copyLinkDoneText,
+    quizHashtag,
   ] = rsbtxt;
   const socials = getSocials(facebookText, twitterText, copyLinkText);
+  const {
+    og_result_url: ogResultUrl = '',
+    og_result_img: ogResultImg = '',
+    prestige = '',
+  } = window;
 
   Object.assign(smmConfig, {
     socials,
-    copyLinkDoneText,
     test,
+    copyLinkDoneText,
+    quizHashtag,
+    ogResultUrl,
+    ogResultImg,
+    prestige,
   });
 }

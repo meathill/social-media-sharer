@@ -1,35 +1,3 @@
-@media only screen and (min-width: 780px) {
-  #btm-share {
-    top: 50%;
-    flex-direction: column;
-    width: 65px !important;
-    bottom:auto !important;
-    transform:translate(0,-50%);
-    left:-55px;
-    padding-right:40px;
-  }
-  #btm-share:hover {
-    left:0;
-    transition:.2s
-  }
-  #btm-share a, #btm-share b{
-    transition:.1s ease-out;
-  }
-  #btm-share a div, #btm-share b div{
-  }
-  #btm-share a:hover, #btm-share b:hover{
-    padding-left:9px;
-  }
-  #btm-darkmode {
-    display:block !important
-  }
-}
-
-@media only screen and (min-width: 1150px) {
-  #btm-share {
-    left:0;
-  }
-}
 #btm-darkmode {
   direction: ltr;
   text-align: left;
@@ -113,14 +81,6 @@
   right:5px;
   pointer-events:none
 }
-@media only screen and (min-width: 780px) {
-  .btm-tooltip {
-    top:calc(100% - 86px);
-    left:76px;
-    bottom:auto;
-    right:auto;
-  }
-}
 .btm-tooltip svg {
   position: static;
   fill: #fff;
@@ -140,4 +100,40 @@
 }
 @media (prefers-color-scheme: light) {
   #btm-darkmode {display:none}
+}
+@media only screen and (min-width: 780px) {
+  #btm-share {
+    top: 50%;
+    bottom: auto;
+    flex-direction: column;
+    width: 65px;
+    transform:translate(0,-50%);
+    left:-55px;
+  }
+  #btm-share:hover {
+    left:0;
+    transition:.2s
+  }
+  #btm-share a, #btm-share b{
+    transition:.1s ease-out;
+  }
+  #btm-share a div, #btm-share b div{
+  }
+  #btm-share a:hover, #btm-share b:hover{
+    padding-left:9px;
+  }
+  #btm-darkmode {
+    display:block !important
+  }
+  .btm-tooltip {
+    top:calc(100% - 86px);
+    left:76px;
+    bottom:auto;
+    right:auto;
+  }
+}
+@media only screen and (min-width: 1150px) {
+  #btm-share {
+    left:0;
+  }
 }

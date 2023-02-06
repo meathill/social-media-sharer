@@ -1,7 +1,7 @@
 import 'https://code.jquery.com/jquery-3.6.3.slim.min.js';
 import iconCheck from '../assets/icon-check.svg';
 import iconDark from '../assets/icon-dark.svg';
-import css from './main.css?raw';
+import css from './main.css?inline';
 import { Platforms, initConfig, smmConfig } from './data';
 import { copyToClipboard, getBottomCSS, httpBuildQuery } from '../utils';
 import pkg from '../../package.json';
@@ -21,12 +21,11 @@ function removeByIndex(str: string, index: number): string {
 }
 function buildLink(type: string): string {
   const {
-    og_result_url: ogResultUrl = '',
-    og_result_img: ogResultImg = '',
-    _rsbtxt = [],
+    ogResultUrl,
+    ogResultImg,
+    quizHashtag,
     prestige,
-  } = window;
-  const quizHashtag = _rsbtxt[ 4 ];
+  } = smmConfig;
   const shareText = prestige || document.title;
   const shareTextWb = prestige ? `#${quizHashtag}# ${prestige}` : document.title;
   const quizDesc = $('meta[name="description"]').attr('content') || '';
@@ -171,8 +170,7 @@ function initButtons(): Platforms[] {
 
   //Add later
   // TODO rename `test`
-  const { test } = window;
-  switch(test.lang) {
+  switch(smmConfig.test.lang) {
     case 'ru':
     case 'uk':
       buttons.push(Platforms.vk);
@@ -226,7 +224,7 @@ function initButtons(): Platforms[] {
   return buttons;
 }
 function attachEvents(wrapper: HTMLDivElement): void {
-  const { test } = window;
+  const { test } = smmConfig;
   // @ts-ignore
   $(wrapper).on('click', '[data-stat]', function (event: MouseEvent) {
     const shareType = (event.target as HTMLElement).dataset.stat;

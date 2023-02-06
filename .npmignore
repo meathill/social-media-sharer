@@ -1,0 +1,11 @@
+src
+public
+.eslintignore
+.eslintrc.js
+.gitignore
+index.html
+pnpm-lock.yaml
+postcss.config.cjs
+tailwind.config.cjs
+tsconfig.json
+vite.config.js
