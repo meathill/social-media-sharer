@@ -4,6 +4,7 @@ import iconDark from '../assets/icon-dark.svg';
 import css from './main.css?raw';
 import { Platforms, initConfig, smmConfig } from './data';
 import { copyToClipboard, getBottomCSS, httpBuildQuery } from '../utils';
+import pkg from '../../package.json';
 
 /* global ga */
 
@@ -140,7 +141,7 @@ function getBottomHtmlById(arr: Platforms[]): string {
         <div id="btm-dark-switch">
           <section id="btm-dark-toggle-back"></section>
           <section id="btm-dark-toggle-thumb">
-            <img src="${iconDark}" width="24" height="24" />
+            <img src="${iconDark}" width="17" height="17" />
           </section>
         </div>
       </div>`;
@@ -239,8 +240,9 @@ function attachEvents(wrapper: HTMLDivElement): void {
     });
   })
 
-  const darkToggleThumb = wrapper.lastElementChild as HTMLDivElement;
-  const linkItem = darkToggleThumb.previousElementSibling as HTMLDivElement;
+  const darkToggle = wrapper.lastElementChild as HTMLDivElement;
+  const linkItem = darkToggle.previousElementSibling as HTMLDivElement;
+  const darkToggleThumb = $('#btm-dark-toggle-thumb')[ 0 ];
   // @ts-ignore
   $(linkItem).click(function (event: MouseEvent): void {
     const $tooltip = (event.target as HTMLElement).getElementsByClassName('btm-tooltip')[ 0 ];
@@ -311,3 +313,4 @@ if (window._rsbtxt && window.test) {
 }
 
 export default start;
+export const version = pkg.version;

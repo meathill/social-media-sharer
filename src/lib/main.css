@@ -53,14 +53,13 @@
   background: rgba(0,0,0,.5);
   backdrop-filter: blur(11px) contrast(5);
 }
-#dark-switch {
+#btm-dark-switch {
   height:45px;
   position:relative;
   max-width:70px;
   cursor:pointer;
 }
-
-#dark-toggle-back {
+#btm-dark-toggle-back {
   width: 90%;
   background: #666;
   height: 24px;
@@ -70,7 +69,7 @@
   transform: translate(-50%,-50%);
   border-radius: 99px;
 }
-#dark-toggle-thumb {
+#btm-dark-toggle-thumb {
   background: #999;
   height: 17px;
   border-radius: 99px;
@@ -79,13 +78,14 @@
   position: absolute;
   transition: .1s;
   transform: translate(8px, -50%);
-}
-#dark-toggle-thumb svg {
-  width: 15px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+
+  svg, img {
+    width: 15px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 .dark-on {
   transform: translate(41px, -50%) !important;
