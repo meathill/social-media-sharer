@@ -1,7 +1,8 @@
+.idea
 src
 public
 .eslintignore
-.eslintrc.js
+.eslintrc.cjs
 .gitignore
 index.html
 pnpm-lock.yaml
