@@ -1,10 +1,9 @@
-// @ts-ignore
-import $ from 'https://unpkg.com/jquery@3.6.3/dist/jquery.slim.min.js';
+import 'https://code.jquery.com/jquery-3.6.3.slim.min.js';
 import iconCheck from '../assets/icon-check.svg';
-import iconDark from '../assets/icon-check.svg';
+import iconDark from '../assets/icon-dark.svg';
 import css from './main.css?raw';
-import {Platforms, initConfig, smmConfig} from "./data";
-import {copyToClipboard, getBottomCSS, httpBuildQuery} from "../utils";
+import { Platforms, initConfig, smmConfig } from './data';
+import { copyToClipboard, getBottomCSS, httpBuildQuery } from '../utils';
 
 /* global ga */
 
@@ -26,10 +25,10 @@ function buildLink(type: string): string {
     _rsbtxt = [],
     prestige,
   } = window;
-  const quizHashtag = _rsbtxt[4];
+  const quizHashtag = _rsbtxt[ 4 ];
   const shareText = prestige || document.title;
   const shareTextWb = prestige ? `#${quizHashtag}# ${prestige}` : document.title;
-  const quizDesc = $('meta[name="description"]').attr('content');
+  const quizDesc = $('meta[name="description"]').attr('content') || '';
   switch(type) {
     case 'fb':
       return 'https://www.facebook.com/sharer.php?u='+ogResultUrl;
@@ -52,7 +51,7 @@ function buildLink(type: string): string {
       })
     case 'wb':
       return '//service.weibo.com/share/share.php?' + httpBuildQuery({
-        appkey:"",
+        appkey:'',
         title: shareTextWb,
         url:ogResultUrl,
         pic:ogResultImg
@@ -69,7 +68,7 @@ function buildLink(type: string): string {
     case 'messenger':
       return 'fb-messenger://share?' + httpBuildQuery({
         link:ogResultUrl,
-        app_id:"998115753539479"
+        app_id:'998115753539479'
       });
     case 'qzone':
       return '//sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?' + httpBuildQuery({
@@ -93,7 +92,7 @@ function buildLink(type: string): string {
     case 'plurk':
       // TODO to see whether we need to add text and hashtag in this.
       return '//www.plurk.com/?' + httpBuildQuery({
-        qualifier:"shares",
+        qualifier:'shares',
         status:ogResultUrl
       });
     case 'line':
@@ -102,14 +101,14 @@ function buildLink(type: string): string {
       });
     case 'tumblr':
       return '//www.tumblr.com/widgets/share/tool/preview?' + httpBuildQuery({
-        shareSource:"legacy",
-        canonicalUrl:"",
+        shareSource:'legacy',
+        canonicalUrl:'',
         url:ogResultUrl,
         title:shareText
       });
     case 'whatsapp':
       return '//api.whatsapp.com/send?' + httpBuildQuery({
-        phone:"",
+        phone:'',
         url:ogResultUrl,
         text:shareText
       });
@@ -119,10 +118,10 @@ function buildLink(type: string): string {
 }
 
 function getBottomHtmlById(arr: Platforms[]): string {
-  const {copyLinkDoneText, socials} = smmConfig;
+  const { copyLinkDoneText, socials } = smmConfig;
   const html = arr.map((el)=>{
     let tag = 'a';
-    let target = ' target="_blank"';
+    const target = ' target="_blank"';
     let tooltip = '';
     if (['html', 'link'].includes(el)) {
       tag = 'b';
@@ -131,7 +130,7 @@ function getBottomHtmlById(arr: Platforms[]): string {
       tooltip = `<div class="btm-tooltip"><img src="${iconCheck}" width="24" height="24" /><span>${copyLinkDoneText}</span></div>`;
     }
     return `
-      <${tag}${target} title="${socials[el].name}" data-stat="${el}" class="btm-${el}">
+      <${tag}${target} title="${socials[ el ].name}" data-stat="${el}" class="btm-${el}">
         <div class="btm-${el}-icon"></div>
         ${tooltip}
       </${tag}>`
@@ -173,50 +172,50 @@ function initButtons(): Platforms[] {
   // TODO rename `test`
   const { test } = window;
   switch(test.lang) {
-    case "ru":
-    case "uk":
+    case 'ru':
+    case 'uk':
       buttons.push(Platforms.vk);
       buttons.push(Platforms.ok);
       break;
-    case "cn":
+    case 'cn':
       buttons.push(Platforms.wb);
       buttons.push(Platforms.qzone);
       break;
-    case "ja":
+    case 'ja':
       buttons.push(Platforms.line);
       buttons.push(Platforms.kakao);
       break;
-    case "ko":
+    case 'ko':
       buttons.push(Platforms.naver);
       buttons.push(Platforms.kakao);
       buttons.push(Platforms.line);
       break;
-    case "zh":
+    case 'zh':
       buttons.push(Platforms.plurk);
       buttons.push(Platforms.line);
       break;
-    case "en":
+    case 'en':
       buttons.push(Platforms.messenger);
       buttons.push(Platforms.whatsapp);
       buttons.push(Platforms.reddit);
       break;
-    case "de":
+    case 'de':
       buttons.push(Platforms.reddit);
       buttons.push(Platforms.whatsapp);
       break;
-    case "es":
+    case 'es':
       buttons.push(Platforms.whatsapp);
       break;
-    case "id":
+    case 'id':
       buttons.push(Platforms.whatsapp);
       break;
-    case "it":
+    case 'it':
       buttons.push(Platforms.whatsapp);
       break;
-    case "pt":
+    case 'pt':
       buttons.push(Platforms.whatsapp);
       break;
-    case "th":
+    case 'th':
       buttons.push(Platforms.line);
       break;
 
@@ -227,8 +226,8 @@ function initButtons(): Platforms[] {
 }
 function attachEvents(wrapper: HTMLDivElement): void {
   const { test } = window;
-  $(wrapper)
-    .on('click', '[data-stat]', function (event: MouseEvent) {
+  // @ts-ignore
+  $(wrapper).on('click', '[data-stat]', function (event: MouseEvent) {
     const shareType = (event.target as HTMLElement).dataset.stat;
     //gT for Global Tracker
     ga('gT.send', 'event', {
@@ -242,8 +241,9 @@ function attachEvents(wrapper: HTMLDivElement): void {
 
   const darkToggleThumb = wrapper.lastElementChild as HTMLDivElement;
   const linkItem = darkToggleThumb.previousElementSibling as HTMLDivElement;
+  // @ts-ignore
   $(linkItem).click(function (event: MouseEvent): void {
-    const $tooltip = (event.target as HTMLElement).getElementsByClassName('btm-tooltip')[0];
+    const $tooltip = (event.target as HTMLElement).getElementsByClassName('btm-tooltip')[ 0 ];
     $tooltip.classList.add('btm-opened');
     linkItem.classList.add('block-backdrop');
     setTimeout(()=>{
@@ -275,7 +275,7 @@ function attachEvents(wrapper: HTMLDivElement): void {
     darkToggleThumb.classList.toggle(darkOnClassName);
     const setToDark = darkToggleThumb.classList.contains(darkOnClassName);
     if (setToDark) {
-      $('#darkmode')[0].disabled = false;
+      $('#darkmode').prop('disabled', false);
       let cssHtml = $('#darkmode').html();
       const darkSelector = '@media (prefers-color-scheme:dark){';
       if(cssHtml.includes(darkSelector)) {
@@ -285,7 +285,7 @@ function attachEvents(wrapper: HTMLDivElement): void {
       }
       $('#darkmode').html(cssHtml);
     } else {
-      $('#darkmode')[0].disabled = true; // Set to true, so we force the <style>@media .... </style> block to stop working.
+      $('#darkmode').prop('disabled', true); // Set to true, so we force the <style>@media .... </style> block to stop working.
     }
     ga('gT.send', 'event', {
       eventCategory:'ux-report',
@@ -296,10 +296,10 @@ function attachEvents(wrapper: HTMLDivElement): void {
     });
   });
 }
-function start(rsbtxt: string[]): void {
+function start(rsbtxt: string[], test: TestData): void {
   if ($('#btm-share').length) return;
 
-  initConfig(rsbtxt);
+  initConfig(rsbtxt, test);
   const buttons = initButtons();
   const wrapper = createBTMShare(buttons);
   updateAllSocialItemLinks();
@@ -307,5 +307,7 @@ function start(rsbtxt: string[]): void {
 }
 
 if (window._rsbtxt && window.test) {
-  start(window._rsbtxt);
+  start(window._rsbtxt, window.test);
 }
+
+export default start;

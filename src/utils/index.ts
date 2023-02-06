@@ -1,5 +1,5 @@
-import {Platforms, smmConfig} from "../lib/data";
-import {SocialConfig} from "../lib/types";
+import { Platforms, smmConfig } from '../lib/data';
+import { SocialConfig } from '../lib/types';
 
 export function fallbackCopyTextToClipboard(text: string): void {
   const textArea = document.createElement('textarea');
@@ -28,14 +28,14 @@ export async function copyToClipboard(text: string): Promise<void> {
 
 export function httpBuildQuery(obj: Record<string, string>) {
   return Object.keys(obj).map(function(key) {
-    return encodeURIComponent(key)+'='+encodeURIComponent(obj[key]);
+    return encodeURIComponent(key)+'='+encodeURIComponent(obj[ key ]);
   }).join('&');
 }
 
 export function getBottomCSS() {
   let css = '';
   for (const item in smmConfig.socials) {
-    const obj: SocialConfig = smmConfig.socials[item as Platforms];
+    const obj: SocialConfig = smmConfig.socials[ item as Platforms ];
     const opacity = .84;
     const opacityHex = (opacity * 255 >> 0).toString(16);
 

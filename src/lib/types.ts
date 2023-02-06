@@ -1,4 +1,4 @@
-import {Platforms} from "./data";
+import { Platforms } from './data';
 
 export type SocialConfig = {
   name: string;

@@ -1,14 +1,31 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
+import check from './assets/icon-check.svg'
 import { setupCounter } from './counter'
+import startSmm from './lib/index';
+
+const _rsbtxt = window._rsbtxt = [
+  'Tweet',
+  'Post on Facebook',
+  'Copy Link',
+  'Link copied!',
+  'StockCalculator'
+];
+
+const test = window.test = {
+  'name': 'home',
+  'lang': 'en',
+  url: 'https://stockcalculator.io',
+}
+
+startSmm(_rsbtxt, test);
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
     <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
+      <img src="${check}" class="logo" alt="Vite logo" />
     </a>
     <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
+      <img src="${check}" class="logo vanilla" alt="TypeScript logo" />
     </a>
     <h1>Vite + TypeScript</h1>
     <div class="card">
