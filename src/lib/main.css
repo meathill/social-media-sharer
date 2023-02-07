@@ -115,7 +115,7 @@
 }
 @media only screen and (min-width: 780px) {
   #btm-share {
-    --x: 56px;
+    --x: -56px;
     top: 50%;
     bottom: auto;
     flex-direction: column;
