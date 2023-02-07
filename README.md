@@ -1,4 +1,4 @@
-Site share component
+Social media magic
 ========
 
 

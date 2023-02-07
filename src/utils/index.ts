@@ -32,6 +32,7 @@ export function httpBuildQuery(obj: Record<string, string>) {
   }).join('&');
 }
 
+// TODO remove this function and refactor CSS instead
 export function getBottomCSS() {
   let css = '';
   for (const item in smmConfig.socials) {
@@ -44,15 +45,9 @@ export function getBottomCSS() {
     css += `
       .btm-${item} {
         background:${bgStyle};
-        width:100%;
-        cursor:pointer;
-        backdrop-filter:blur(15px) contrast(5);
-        -webkit-backdrop-filter:blur(15px) contrast(5);
       }
       .btm-${item}:hover {
         background:${bgHoverStyle};
-        backdrop-filter:none;
-        -webkit-backdrop-filter:none;
       }
       .btm-${item}-icon {
         background:url('https://www.arealme.com/ssimgs/s5.svg') 0 -${obj.i*45}px;
