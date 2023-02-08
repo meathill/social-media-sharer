@@ -127,7 +127,7 @@ function getBottomHtmlById(arr: Platforms[]): string {
       tag = 'b';
     }
     if(el === Platforms.link) {
-      tooltip = `<div class="btm-tooltip"><img src="${iconCheck}" width="24" height="24" /><span>${copyLinkDoneText}</span></div>`;
+      tooltip = `<div class="btm-tooltip"><img alt="link icon" src="${iconCheck}" width="24" height="24" /><span>${copyLinkDoneText}</span></div>`;
     }
     return `
       <${tag}${target} title="${socials[ el ].name}" data-stat="${el}" class="btm-${el}">
@@ -140,7 +140,7 @@ function getBottomHtmlById(arr: Platforms[]): string {
         <div id="btm-dark-switch">
           <section id="btm-dark-toggle-back"></section>
           <section id="btm-dark-toggle-thumb">
-            <img src="${iconDark}" width="17" height="17" />
+            <img alt="moon icon" src="${iconDark}" width="17" height="17" />
           </section>
         </div>
       </div>`;
