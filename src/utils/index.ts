@@ -48,10 +48,13 @@ export function getBottomCSS() {
       }
       .btm-${item}:hover {
         background:${bgHoverStyle};
-      }
+      }`;
+    if (item !== Platforms.linkedin) {
+      css += `
       .btm-${item}-icon {
         background:url('https://www.arealme.com/ssimgs/s5.svg') 0 -${obj.i*45}px;
       }`;
+    }
   }
   return css;
 }

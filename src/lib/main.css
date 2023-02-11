@@ -106,6 +106,11 @@
 .btm-opened {
   opacity:1;
 }
+.btm-linkedin-icon {
+  background: url(https://unpkg.com/bootstrap-icons@1.10.3/icons/linkedin.svg) no-repeat center;
+  background-size: 65% !important;
+  filter: invert(1);
+}
 @media (prefers-color-scheme: light) {
   #btm-darkmode {display:none}
 }

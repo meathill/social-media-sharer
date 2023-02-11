@@ -19,6 +19,7 @@ export enum Platforms {
   reddit = 'reddit',
   ok = 'ok',
   whatsapp = 'whatsapp',
+  linkedin = 'linkedin',
 }
 
 export function getSocials(
@@ -52,6 +53,7 @@ export function getSocials(
     [ Platforms.reddit ]: { name: 'Reddit' , i: 14, c: '#FF4500{a}' },
     [ Platforms.ok ]: { name:'Одноклассники', i:15, c:'#EE8208{a}' },
     [ Platforms.whatsapp ]: { name:'WhatsApp', i:16, c:'#2FB943{a}' },
+    [ Platforms.linkedin ]: { name: 'LinkedIn', i: 17, c: '#0077B5{a}' },
   };
 }
 

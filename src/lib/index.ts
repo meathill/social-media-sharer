@@ -2,24 +2,24 @@ import 'https://code.jquery.com/jquery-3.6.3.slim.min.js';
 import iconCheck from '../assets/icon-check.svg';
 import iconDark from '../assets/icon-dark.svg';
 import css from './main.css?inline';
-import { Platforms, initConfig, smmConfig } from './data';
+import { initConfig, Platforms, smmConfig } from './data';
 import { copyToClipboard, getBottomCSS, httpBuildQuery } from '../utils';
 import pkg from '../../package.json';
 
 /* global ga */
 
-function updateSmmLinks(type: string): void {
+function updateSmmLinks(type: Platforms): void {
   $(`.btm-${type}`).attr('href', buildLink(type));
 }
 function updateAllSocialItemLinks(): void {
   for (const key in Platforms) {
-    updateSmmLinks(key);
+    updateSmmLinks(Platforms[ key as keyof typeof Platforms ]);
   }
 }
 function removeByIndex(str: string, index: number): string {
   return str.slice(0,index) + str.slice(index+1);
 }
-function buildLink(type: string): string {
+function buildLink(type: Platforms): string {
   const {
     ogResultUrl,
     ogResultImg,
@@ -29,48 +29,48 @@ function buildLink(type: string): string {
   const shareText = prestige || document.title;
   const shareTextWb = prestige ? `#${quizHashtag}# ${prestige}` : document.title;
   const quizDesc = $('meta[name="description"]').attr('content') || '';
-  switch(type) {
-    case 'fb':
+  switch (type) {
+    case Platforms.fb:
       return 'https://www.facebook.com/sharer.php?u='+ogResultUrl;
-    case 'tw':
+    case Platforms.tw:
       return '//twitter.com/share?' + httpBuildQuery({
         text:shareText,
         hashtags:quizHashtag,
         url:ogResultUrl
       });
-    case 'vk':
+    case Platforms.vk:
       return '//vk.com/share.php?' + httpBuildQuery({
         url:ogResultUrl,
         image:ogResultImg
       });
-    case 'ok':
+    case Platforms.ok:
       return '//connect.ok.ru/offer?' + httpBuildQuery({
         url:ogResultUrl,
         title:shareText,
         imageUrl:ogResultImg
       })
-    case 'wb':
+    case Platforms.wb:
       return '//service.weibo.com/share/share.php?' + httpBuildQuery({
         appkey:'',
         title: shareTextWb,
         url:ogResultUrl,
         pic:ogResultImg
       });
-    case 'naver':
+    case Platforms.naver:
       return '//share.naver.com/web/shareView.nhn?' + httpBuildQuery({
         url:ogResultUrl,
         title:shareText
       });
-    case 'kakao':
+    case Platforms.kakao:
       return '//story.kakao.com/s/share?' + httpBuildQuery({
         url:ogResultUrl
       });
-    case 'messenger':
+    case Platforms.messenger:
       return 'fb-messenger://share?' + httpBuildQuery({
         link:ogResultUrl,
         app_id:'998115753539479'
       });
-    case 'qzone':
+    case Platforms.qzone:
       return '//sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?' + httpBuildQuery({
         url:ogResultUrl,
         title:shareTextWb,
@@ -78,40 +78,42 @@ function buildLink(type: string): string {
         summary:quizHashtag,
         pics:ogResultImg
       });
-    case 'reddit':
+    case Platforms.reddit:
       return '//www.reddit.com/submit?' + httpBuildQuery({
         url:ogResultUrl,
         title:shareText
       });
-    case 'pin':
+    case Platforms.pin:
       return '//www.pinterest.com/pin/create/button/?' + httpBuildQuery({
         url:ogResultUrl,
         media:ogResultImg,
         description:shareText
       });
-    case 'plurk':
+    case Platforms.plurk:
       // TODO to see whether we need to add text and hashtag in this.
       return '//www.plurk.com/?' + httpBuildQuery({
         qualifier:'shares',
         status:ogResultUrl
       });
-    case 'line':
+    case Platforms.line:
       return '//line.me/R/share?' + httpBuildQuery({
         text: shareTextWb + ' ' + ogResultUrl
       });
-    case 'tumblr':
+    case Platforms.tumblr:
       return '//www.tumblr.com/widgets/share/tool/preview?' + httpBuildQuery({
         shareSource:'legacy',
         canonicalUrl:'',
         url:ogResultUrl,
         title:shareText
       });
-    case 'whatsapp':
+    case Platforms.whatsapp:
       return '//api.whatsapp.com/send?' + httpBuildQuery({
         phone:'',
         url:ogResultUrl,
         text:shareText
       });
+    case Platforms.linkedin:
+      return 'https://www.linkedin.com/sharing/share-offsite/?url=' + ogResultUrl;
     default:
       return '';
   }
@@ -166,7 +168,7 @@ function initButtons(): Platforms[] {
     buttons.push(Platforms.tw);
     buttons.push(Platforms.fb);
   }
-  buttons.push(Platforms.pin);
+  buttons.push(Platforms.linkedin);
 
   //Add later
   // TODO rename `test`
