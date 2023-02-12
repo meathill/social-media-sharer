@@ -1,3 +1,4 @@
+// TODO remove jquery
 import 'https://code.jquery.com/jquery-3.6.3.slim.min.js';
 import iconCheck from '../assets/icon-check.svg';
 import iconDark from '../assets/icon-dark.svg';
@@ -8,112 +9,104 @@ import pkg from '../../package.json';
 
 /* global ga */
 
-function updateSmmLinks(type: Platforms): void {
-  $(`.btm-${type}`).attr('href', buildLink(type));
-}
-function updateAllSocialItemLinks(): void {
-  for (const key in Platforms) {
-    updateSmmLinks(Platforms[ key as keyof typeof Platforms ]);
-  }
-}
 function removeByIndex(str: string, index: number): string {
   return str.slice(0,index) + str.slice(index+1);
 }
 function buildLink(type: Platforms): string {
   const {
-    ogResultUrl,
     ogResultImg,
     quizHashtag,
     prestige,
   } = smmConfig;
+  const url = location.href;
   const shareText = prestige || document.title;
   const shareTextWb = prestige ? `#${quizHashtag}# ${prestige}` : document.title;
   const quizDesc = $('meta[name="description"]').attr('content') || '';
   switch (type) {
     case Platforms.fb:
-      return 'https://www.facebook.com/sharer.php?u='+ogResultUrl;
+      return 'https://www.facebook.com/sharer.php?u='+url;
     case Platforms.tw:
-      return '//twitter.com/share?' + httpBuildQuery({
+      return 'https://twitter.com/share?' + httpBuildQuery({
         text:shareText,
         hashtags:quizHashtag,
-        url:ogResultUrl
+        url,
       });
     case Platforms.vk:
-      return '//vk.com/share.php?' + httpBuildQuery({
-        url:ogResultUrl,
+      return 'https://vk.com/share.php?' + httpBuildQuery({
+        url,
         image:ogResultImg
       });
     case Platforms.ok:
-      return '//connect.ok.ru/offer?' + httpBuildQuery({
-        url:ogResultUrl,
+      return 'https://connect.ok.ru/offer?' + httpBuildQuery({
+        url,
         title:shareText,
         imageUrl:ogResultImg
       })
     case Platforms.wb:
-      return '//service.weibo.com/share/share.php?' + httpBuildQuery({
+      return 'https://service.weibo.com/share/share.php?' + httpBuildQuery({
         appkey:'',
         title: shareTextWb,
-        url:ogResultUrl,
+        url,
         pic:ogResultImg
       });
     case Platforms.naver:
-      return '//share.naver.com/web/shareView.nhn?' + httpBuildQuery({
-        url:ogResultUrl,
+      return 'https://share.naver.com/web/shareView.nhn?' + httpBuildQuery({
+        url,
         title:shareText
       });
     case Platforms.kakao:
-      return '//story.kakao.com/s/share?' + httpBuildQuery({
-        url:ogResultUrl
+      return 'https://story.kakao.com/s/share?' + httpBuildQuery({
+        url,
       });
     case Platforms.messenger:
       return 'fb-messenger://share?' + httpBuildQuery({
-        link:ogResultUrl,
+        link: url,
         app_id:'998115753539479'
       });
     case Platforms.qzone:
-      return '//sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?' + httpBuildQuery({
-        url:ogResultUrl,
+      return 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?' + httpBuildQuery({
+        url,
         title:shareTextWb,
         desc:quizDesc,
         summary:quizHashtag,
         pics:ogResultImg
       });
     case Platforms.reddit:
-      return '//www.reddit.com/submit?' + httpBuildQuery({
-        url:ogResultUrl,
+      return 'https://www.reddit.com/submit?' + httpBuildQuery({
+        url,
         title:shareText
       });
     case Platforms.pin:
-      return '//www.pinterest.com/pin/create/button/?' + httpBuildQuery({
-        url:ogResultUrl,
+      return 'https://www.pinterest.com/pin/create/button/?' + httpBuildQuery({
+        url,
         media:ogResultImg,
         description:shareText
       });
     case Platforms.plurk:
       // TODO to see whether we need to add text and hashtag in this.
-      return '//www.plurk.com/?' + httpBuildQuery({
+      return 'https://www.plurk.com/?' + httpBuildQuery({
         qualifier:'shares',
-        status:ogResultUrl
+        status: url,
       });
     case Platforms.line:
-      return '//line.me/R/share?' + httpBuildQuery({
-        text: shareTextWb + ' ' + ogResultUrl
+      return 'https://line.me/R/share?' + httpBuildQuery({
+        text: shareTextWb + ' ' + url
       });
     case Platforms.tumblr:
-      return '//www.tumblr.com/widgets/share/tool/preview?' + httpBuildQuery({
+      return 'https://www.tumblr.com/widgets/share/tool/preview?' + httpBuildQuery({
         shareSource:'legacy',
         canonicalUrl:'',
-        url:ogResultUrl,
+        url,
         title:shareText
       });
     case Platforms.whatsapp:
-      return '//api.whatsapp.com/send?' + httpBuildQuery({
+      return 'https://api.whatsapp.com/send?' + httpBuildQuery({
         phone:'',
-        url:ogResultUrl,
+        url,
         text:shareText
       });
     case Platforms.linkedin:
-      return 'https://www.linkedin.com/sharing/share-offsite/?url=' + ogResultUrl;
+      return 'https://www.linkedin.com/sharing/share-offsite/?url=' + url;
     default:
       return '';
   }
@@ -227,9 +220,12 @@ function initButtons(): Platforms[] {
 }
 function attachEvents(wrapper: HTMLDivElement): void {
   const { test } = smmConfig;
+  // 点击任意分享按钮
   // @ts-ignore
   $(wrapper).on('click', '[data-stat]', function (event: MouseEvent) {
-    const shareType = (event.target as HTMLElement).dataset.stat;
+    const link = event.currentTarget as HTMLLinkElement;
+    const shareType = link.dataset.stat;
+    link.href = buildLink(shareType as Platforms)
     //gT for Global Tracker
     ga('gT.send', 'event', {
       eventCategory:'btm-share',
@@ -242,9 +238,10 @@ function attachEvents(wrapper: HTMLDivElement): void {
 
   const darkToggle = wrapper.lastElementChild as HTMLDivElement;
   const linkItem = darkToggle.previousElementSibling as HTMLDivElement;
-  const darkToggleThumb = $('#btm-dark-toggle-thumb')[ 0 ];
+  const darkToggleThumb = document.getElementById('btm-dark-toggle-thumb') as HTMLDivElement;
+  // 点击复制链接按钮
   // @ts-ignore
-  $(linkItem).click(function (event: MouseEvent): void {
+  linkItem.addEventListener('click', function (event: MouseEvent): void {
     const $tooltip = (event.target as HTMLElement).getElementsByClassName('btm-tooltip')[ 0 ];
     $tooltip.classList.add('btm-opened');
     linkItem.classList.add('block-backdrop');
@@ -299,12 +296,11 @@ function attachEvents(wrapper: HTMLDivElement): void {
   });
 }
 function start(rsbtxt: string[], test: TestData): void {
-  if ($('#btm-share').length) return;
+  if (document.getElementById('btm-share')) return;
 
   initConfig(rsbtxt, test);
   const buttons = initButtons();
   const wrapper = createBTMShare(buttons);
-  updateAllSocialItemLinks();
   attachEvents(wrapper);
 }
 

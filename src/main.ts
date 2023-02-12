@@ -17,6 +17,10 @@ const test = window.test = {
   url: 'https://stockcalculator.io',
 }
 
+window.ga = function(...args) {
+  console.log('ga', args);
+}
+
 startSmm(_rsbtxt, test);
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
