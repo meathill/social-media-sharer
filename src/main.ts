@@ -21,7 +21,7 @@ window.ga = function(...args) {
   console.log('ga', args);
 }
 
-startSmm(_rsbtxt, test);
+startSmm(_rsbtxt, test, { darkSwitch: false });
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>

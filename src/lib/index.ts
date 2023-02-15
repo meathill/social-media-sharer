@@ -6,6 +6,7 @@ import css from './main.css?inline';
 import { initConfig, Platforms, smmConfig } from './data';
 import { copyToClipboard, getBottomCSS, httpBuildQuery } from '../utils';
 import pkg from '../../package.json';
+import { SmmOptions } from './types';
 
 /* global ga */
 
@@ -21,7 +22,7 @@ function buildLink(type: Platforms): string {
   const url = location.href;
   const shareText = prestige || document.title;
   const shareTextWb = prestige ? `#${quizHashtag}# ${prestige}` : document.title;
-  const quizDesc = $('meta[name="description"]').attr('content') || '';
+  const quizDesc = (document.querySelector('meta[name="description"]') as HTMLMetaElement).content || '';
   switch (type) {
     case Platforms.fb:
       return 'https://www.facebook.com/sharer.php?u='+url;
@@ -114,7 +115,7 @@ function buildLink(type: Platforms): string {
 
 function getBottomHtmlById(arr: Platforms[]): string {
   const { copyLinkDoneText, socials } = smmConfig;
-  const html = arr.map((el)=>{
+  let html = arr.map((el)=>{
     let tag = 'a';
     const target = ' target="_blank"';
     let tooltip = '';
@@ -130,7 +131,8 @@ function getBottomHtmlById(arr: Platforms[]): string {
         ${tooltip}
       </${tag}>`
   }).join('');
-  return html + `
+  if (smmConfig.darkSwitch) {
+    html += `
       <div id="btm-darkmode">
         <div id="btm-dark-switch">
           <section id="btm-dark-toggle-back"></section>
@@ -139,6 +141,8 @@ function getBottomHtmlById(arr: Platforms[]): string {
           </section>
         </div>
       </div>`;
+  }
+  return html;
 }
 function createBTMShare(buttons: Platforms[]): HTMLDivElement {
   const wrapper = document.createElement('div');
@@ -219,7 +223,7 @@ function initButtons(): Platforms[] {
   return buttons;
 }
 function attachEvents(wrapper: HTMLDivElement): void {
-  const { test } = smmConfig;
+  const { test, darkSwitch } = smmConfig;
   // 点击任意分享按钮
   // @ts-ignore
   $(wrapper).on('click', '[data-stat]', function (event: MouseEvent) {
@@ -236,13 +240,13 @@ function attachEvents(wrapper: HTMLDivElement): void {
     });
   })
 
-  const darkToggle = wrapper.lastElementChild as HTMLDivElement;
-  const linkItem = darkToggle.previousElementSibling as HTMLDivElement;
-  const darkToggleThumb = document.getElementById('btm-dark-toggle-thumb') as HTMLDivElement;
+  const lastItem = wrapper.lastElementChild as HTMLDivElement;
+  const linkItem = darkSwitch ? lastItem.previousElementSibling as HTMLDivElement : lastItem;
   // 点击复制链接按钮
   // @ts-ignore
   linkItem.addEventListener('click', function (event: MouseEvent): void {
-    const $tooltip = (event.target as HTMLElement).getElementsByClassName('btm-tooltip')[ 0 ];
+    const $tooltip = (event.currentTarget as HTMLElement)
+      .getElementsByClassName('btm-tooltip')[ 0 ];
     $tooltip.classList.add('btm-opened');
     linkItem.classList.add('block-backdrop');
     setTimeout(()=>{
@@ -252,8 +256,15 @@ function attachEvents(wrapper: HTMLDivElement): void {
     setTimeout(()=>{
       $tooltip.classList.remove('btm-opened');
     }, 1999);
-    copyToClipboard(test.url);
+    copyToClipboard(location.href);
   });
+
+  if (darkSwitch) {
+    enableDarkSwitch(test);
+  }
+}
+function enableDarkSwitch(test: TestData): void {
+  const darkToggleThumb = document.getElementById('btm-dark-toggle-thumb') as HTMLDivElement;
 
   // 0 - Predefined variables
   const darkOnClassName = 'dark-on';
@@ -270,21 +281,25 @@ function attachEvents(wrapper: HTMLDivElement): void {
   }
   // 3 - Event handler
   // TODO change dark mode switcher
-  $('#btm-dark-switch').click(function () {
+  const darkSwitch = document.getElementById('btm-dark-switch') as HTMLDivElement;
+  darkSwitch.addEventListener('click', function () {
     darkToggleThumb.classList.toggle(darkOnClassName);
+    const darkMode: HTMLStyleElement = document.getElementById('darkmode') as HTMLStyleElement;
+    if (!darkMode) return;
+
     const setToDark = darkToggleThumb.classList.contains(darkOnClassName);
     if (setToDark) {
-      $('#darkmode').prop('disabled', false);
-      let cssHtml = $('#darkmode').html();
+      darkMode.disabled = false;
+      let cssHtml = darkMode.innerHTML;
       const darkSelector = '@media (prefers-color-scheme:dark){';
-      if(cssHtml.includes(darkSelector)) {
+      if (cssHtml.includes(darkSelector)) {
         const lastBracketIndex = cssHtml.lastIndexOf('}');
         cssHtml = removeByIndex(cssHtml, lastBracketIndex);
         cssHtml = cssHtml.split(darkSelector).join('');
       }
-      $('#darkmode').html(cssHtml);
+      darkMode.innerHTML = cssHtml;
     } else {
-      $('#darkmode').prop('disabled', true); // Set to true, so we force the <style>@media .... </style> block to stop working.
+      darkMode.disabled = true; // Set to true, so we force the <style>@media .... </style> block to stop working.
     }
     ga('gT.send', 'event', {
       eventCategory:'ux-report',
@@ -295,10 +310,10 @@ function attachEvents(wrapper: HTMLDivElement): void {
     });
   });
 }
-function start(rsbtxt: string[], test: TestData): void {
+function start(rsbtxt: string[], test: TestData, options?: SmmOptions): void {
   if (document.getElementById('btm-share')) return;
 
-  initConfig(rsbtxt, test);
+  initConfig(rsbtxt, test, options);
   const buttons = initButtons();
   const wrapper = createBTMShare(buttons);
   attachEvents(wrapper);

@@ -15,4 +15,8 @@ export type SmmConfig = {
   prestige: string;
   ogResultUrl: string;
   ogResultImg: string;
+} & SmmOptions;
+
+export type SmmOptions = {
+  darkSwitch?: boolean;
 }

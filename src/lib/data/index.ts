@@ -1,5 +1,5 @@
 // `{a}` will be replaced by alpha
-import { SmmConfig, SocialConfig } from '../types';
+import { SmmConfig, SmmOptions, SocialConfig } from '../types';
 
 export enum Platforms {
   fb = 'fb',
@@ -58,7 +58,8 @@ export function getSocials(
 }
 
 export const smmConfig: SmmConfig = {} as SmmConfig;
-export function initConfig(rsbtxt: string[], test: TestData) {
+export function initConfig(rsbtxt: string[], test: TestData, options: SmmOptions = {}) {
+  const darkModeElement = document.getElementById('darkmode');
   const [
     facebookText,
     twitterText,
@@ -81,5 +82,9 @@ export function initConfig(rsbtxt: string[], test: TestData) {
     ogResultUrl,
     ogResultImg,
     prestige,
+    ...{
+      darkSwitch: !!darkModeElement,
+    },
+    ...options,
   });
 }
