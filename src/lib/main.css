@@ -67,6 +67,7 @@
   transform: translate(41px, -50%) !important;
 }
 .btm-tooltip {
+  display: none;
   opacity:0;
   position: absolute;
   white-space: nowrap;
@@ -78,7 +79,6 @@
   background-color: #333;
   color: #fff;
   border: 1px solid #333;
-  display: flex;
   align-items: center;
   line-height: 18px;
   box-sizing: border-box;
@@ -88,21 +88,25 @@
   left:auto;
   bottom:50px;
   right:5px;
-  pointer-events:none
-}
-.btm-tooltip svg, img {
-  position: static;
-  fill: #fff;
-  margin-right: 0.5rem;
-  width: 14px;
-  height: 14px;
-  vertical-align: middle;
+  pointer-events:none;
+
+  svg, img {
+    position: static;
+    fill: #fff;
+    margin-right: 0.5rem;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+  }
 }
 .btm-link:hover, .block-backdrop {
   backdrop-filter:none;
 }
 .btm-link {
   position:relative;
+}
+.btm-tooltip-show {
+  display: flex;
 }
 .btm-opened {
   opacity:1;

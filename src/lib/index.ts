@@ -4,7 +4,7 @@ import iconCheck from '../assets/icon-check.svg';
 import iconDark from '../assets/icon-dark.svg';
 import css from './main.css?inline';
 import { initConfig, Platforms, smmConfig } from './data';
-import { copyToClipboard, getBottomCSS, httpBuildQuery } from '../utils';
+import { copyToClipboard, getBottomCSS, httpBuildQuery, sleep } from '../utils';
 import pkg from '../../package.json';
 import { SmmOptions } from './types';
 
@@ -242,11 +242,12 @@ function attachEvents(wrapper: HTMLDivElement): void {
 
   const lastItem = wrapper.lastElementChild as HTMLDivElement;
   const linkItem = darkSwitch ? lastItem.previousElementSibling as HTMLDivElement : lastItem;
+  const $tooltip = linkItem.getElementsByClassName('btm-tooltip')[ 0 ] as HTMLDivElement;
   // 点击复制链接按钮
   // @ts-ignore
-  linkItem.addEventListener('click', function (event: MouseEvent): void {
-    const $tooltip = (event.currentTarget as HTMLElement)
-      .getElementsByClassName('btm-tooltip')[ 0 ];
+  linkItem.addEventListener('click', async function (): void {
+    $tooltip.classList.add('btm-tooltip-show');
+    await sleep(10);
     $tooltip.classList.add('btm-opened');
     linkItem.classList.add('block-backdrop');
     setTimeout(()=>{
@@ -257,6 +258,12 @@ function attachEvents(wrapper: HTMLDivElement): void {
       $tooltip.classList.remove('btm-opened');
     }, 1999);
     copyToClipboard(location.href);
+  });
+  $tooltip.addEventListener('transitionend', function (event: TransitionEvent) {
+    const { propertyName } = event;
+    if (propertyName !== 'opacity') return;
+    if ($tooltip.classList.contains('btm-opened')) return;
+    $tooltip.classList.remove('btm-tooltip-show');
   });
 
   if (darkSwitch) {
