@@ -55,7 +55,7 @@
   transition: .1s;
   transform: translate(8px, -50%);
 
-  svg, img {
+  img {
     width: 15px;
     position: absolute;
     left: 50%;
@@ -90,13 +90,11 @@
   right:5px;
   pointer-events:none;
 
-  svg, img {
-    position: static;
-    fill: #fff;
+  img {
+    filter: invert(1);
     margin-right: 0.5rem;
     width: 14px;
     height: 14px;
-    vertical-align: middle;
   }
 }
 .btm-link:hover, .block-backdrop {
