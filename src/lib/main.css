@@ -1,6 +1,5 @@
 #btm-darkmode {
   direction: ltr;
-  text-align: left;
   display:none;
   background: rgba(0,0,0,.5);
   backdrop-filter: blur(11px) contrast(5);
@@ -117,11 +116,6 @@
 @media (prefers-color-scheme: light) {
   #btm-darkmode {display:none}
 }
-@media only screen and (min-width: 1150px) {
-  #btm-share {
-    --x: 0;
-  }
-}
 @media only screen and (min-width: 780px) {
   #btm-share {
     --x: -56px;
@@ -129,11 +123,12 @@
     bottom: auto;
     flex-direction: column;
     width: 64px;
-    transform:translate(var(--x),-50%);
+    transform:translateY(-50%);
     transition:.2s;
 
     > * {
       --pl: 0px;
+      transform: translateX(var(--x));
       width: calc(100% + var(--pl));
     }
   }
@@ -154,5 +149,10 @@
     left:76px;
     bottom:auto;
     right:auto;
+  }
+}
+@media only screen and (min-width: 1150px) {
+  #btm-share {
+    --x: 0;
   }
 }
