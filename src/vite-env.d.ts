@@ -1,5 +1,9 @@
 /// <reference types="vite/client" />
 
+declare global {
+  const __VERSION__: string;
+}
+
 declare interface TestData {
   name: string;
   lang: string;

@@ -5,7 +5,6 @@ import iconDark from '../assets/icon-dark.svg';
 import css from './main.css?inline';
 import { initConfig, Platforms, smmConfig } from './data';
 import { copyToClipboard, getBottomCSS, httpBuildQuery, sleep } from '../utils';
-import pkg from '../../package.json';
 import { SmmOptions } from './types';
 
 /* global ga */
@@ -331,4 +330,4 @@ if (window._rsbtxt && window.test) {
 }
 
 export default start;
-export const version = pkg.version;
+export const version = __VERSION__;

@@ -1,44 +1,13 @@
 Social media magic
 ========
 
+A simple share to social media tools for your website.
 
-## Top 30 desktop resolutions:
+Usage
+-----
 
-1.  1366x768
-2.  1920x1080
-3.  1536x864
-4.  1440x900
-5.  1280x720
-6.  810x1080
-7.  1600x900
-8.  1280x1024
-9.  1517x853
-10. 1280x800
-11. 768x1024
-12. 2560x1440
-13. 1360x768
-14. 1680x1050
-15. 1024x768
-16. 1300x731
-17. 1600x1600
-18. 1920x1200
-19. 834x1112
-20. 820x1180
-21. 834x1194
-22. 1368x912
-23. 2048x1152
-24. 1241x698
-25. 2560x1080
-26. 1024x1366
-27. 1280x768
-28. 1187x667
-29. 1280x854
-30. 1366x912
-31. 3440x1440
-32. 1093x615
-33. 1504x1003
-34. 1280x960
-35. 1440x960
-36. 800x600
+Directly embed the script in your page:
 
-smallest width is 800
+```html
+<script src="https://unpkg.com/social-media-magic@0.1.12/dist/smm.iife.js" async></script>
+```
